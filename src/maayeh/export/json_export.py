@@ -43,6 +43,7 @@ def maayeh_to_dict(defn: MaayehDefinition) -> dict[str, Any]:
         "metadata": {
             "dastgah": meta.dastgah,
             "radifs": list(meta.radifs),
+            "sources": list(meta.sources),
             "tags": list(meta.tags),
         },
         "dangs": [list(d.intervals) for d in m.dangs],
@@ -108,6 +109,7 @@ def export_all(
             "name": defn.metadata.name,
             "file": out_name,
             "dastgah": defn.metadata.dastgah,
+            "sources": list(defn.metadata.sources),
             "tags": list(defn.metadata.tags),
             "noteCount": len(defn.maayeh.notes),
             "dangCount": len(defn.maayeh.dangs),
@@ -139,5 +141,11 @@ def export_all(
         json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
+
+    # Copy sources.json to output if it exists
+    sources_file = data_dir.parent / "sources.json"
+    if sources_file.exists():
+        import shutil
+        shutil.copy2(sources_file, output_dir / "sources.json")
 
     return exported

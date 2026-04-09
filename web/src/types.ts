@@ -22,7 +22,25 @@ export interface MaayehGoosheh {
 export interface MaayehMetadata {
   dastgah: string;
   radifs: string[];
+  sources: string[];
   tags: string[];
+}
+
+export interface SourceInfo {
+  name: string;
+  shortName: string;
+  author: string;
+  basedOn: string;
+  license: string;
+  url: string;
+  year: number;
+  type: string;
+  coverage: string;
+  citation: string;
+}
+
+export interface SourcesRegistry {
+  sources: Record<string, SourceInfo>;
 }
 
 export interface MaayehDerived {

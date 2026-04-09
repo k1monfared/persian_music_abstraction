@@ -118,6 +118,7 @@ export function parseMaayehText(text: string): MaayehData {
     metadata: {
       dastgah: metadata["dastgah"] ?? "",
       radifs: parseCommaList(metadata["radifs"] ?? ""),
+      sources: parseCommaList(metadata["sources"] ?? ""),
       tags: parseCommaList(metadata["tags"] ?? ""),
     },
     dangs,

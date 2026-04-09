@@ -24,6 +24,11 @@
           "type": "array",
           "items": { "type": "string" }
         },
+        "sources": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Source IDs from data/sources.json that this maayeh comes from."
+        },
         "tags": {
           "type": "array",
           "items": { "type": "string" }

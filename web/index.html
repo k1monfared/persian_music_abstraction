@@ -53,12 +53,13 @@
     <button class="tab" data-tab="database">Database</button>
     <button class="tab" data-tab="editor">Editor</button>
     <button class="tab" data-tab="discovery">Discovery</button>
+    <button class="tab" data-tab="references">References</button>
   </nav>
 
   <!-- Tab panels -->
   <div class="tab-panel active" id="tab-visualization">
     <div class="strip-section">
-      <h2>Dastgah-e Mahur</h2>
+      <h2 id="strip-title">Dastgah-e Mahur</h2>
       <div class="strip-container" id="strip-container"></div>
     </div>
   </div>
@@ -87,6 +88,13 @@
           <div class="editor-status" id="editor-status"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-references">
+    <div class="references-section">
+      <h2>References</h2>
+      <div id="references-panel"></div>
     </div>
   </div>
 

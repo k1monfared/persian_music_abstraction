@@ -1,0 +1,88 @@
+{
+  "sources": {
+    "khalij-knowledgebase": {
+      "name": "Iranian Music Knowledge Base",
+      "shortName": "Khalij/KBase",
+      "author": "Ardavan Khalij",
+      "basedOn": "Dariush Talai's transcription of Mirza Abdollah's radif",
+      "license": "MIT",
+      "url": "https://github.com/ArdavanKhalij/IranianMusicKnowledgeBase.jl",
+      "year": 2023,
+      "type": "data",
+      "coverage": "Complete Radif of Mirza Abdollah: 7 dastgahs, 260 gooshehs with MIDI files and JSON structure including ist, shahed, modulation targets, and importance ratings",
+      "citation": "Khalij, A. (2023). IranianMusicKnowledgeBase.jl [Software]. GitHub."
+    },
+    "shafiei-midi": {
+      "name": "Radif MIDI Files",
+      "shortName": "Shafiei/MIDI",
+      "author": "Dr. Sepideh Shafiei",
+      "basedOn": "Dariush Talai's transcription, generated from Finale notation",
+      "license": "GPL-3.0",
+      "url": "https://github.com/SepiSha/radif-Midi",
+      "year": 2021,
+      "type": "data",
+      "coverage": "MIDI files of Mirza Abdollah's radif with pitch bends for neutral tones",
+      "citation": "Shafiei, S. (2021). Extracting Theory from Practice: A Computational Analysis of the Persian Radif (Doctoral dissertation, City University of New York)."
+    },
+    "shafiei-theoretical-talai": {
+      "name": "Theoretical Tables (Talai)",
+      "shortName": "Talai/Tables",
+      "author": "Dr. Sepideh Shafiei (compiling Dariush Talai's analysis)",
+      "basedOn": "Dariush Talai's musicological analysis of pitch ranges and functional notes",
+      "license": "GPL-3.0",
+      "url": "https://github.com/SepiSha/radif-theoretical-tables",
+      "year": 2021,
+      "type": "reference",
+      "coverage": "Excel spreadsheets with range and functional notes per goosheh for all dastgahs, according to Talai",
+      "citation": "Shafiei, S. (2021). radif-theoretical-tables [Dataset]. GitHub. Based on Talai, D. (2000). Traditional Persian Art Music: The Radif of Mirza Abdollah. Mazda Publishers."
+    },
+    "shafiei-theoretical-jafarzadeh": {
+      "name": "Theoretical Tables (Ja'farzadeh)",
+      "shortName": "Ja'farzadeh/Tables",
+      "author": "Dr. Sepideh Shafiei (compiling Ja'farzadeh's analysis)",
+      "basedOn": "Ja'farzadeh's musicological analysis of pitch ranges and functional notes",
+      "license": "GPL-3.0",
+      "url": "https://github.com/SepiSha/radif-theoretical-tables",
+      "year": 2021,
+      "type": "reference",
+      "coverage": "Excel spreadsheets with range and functional notes per goosheh for all dastgahs, according to Ja'farzadeh",
+      "citation": "Shafiei, S. (2021). radif-theoretical-tables [Dataset]. GitHub."
+    },
+    "farhat-dastgah-concept": {
+      "name": "The Dastgah Concept in Persian Music",
+      "shortName": "Farhat",
+      "author": "Hormoz Farhat",
+      "basedOn": "Original musicological research",
+      "license": "Published book (Cambridge University Press)",
+      "url": "https://www.cambridge.org/core/books/dastgah-concept-in-persian-music/A6EE31137DC3B4E63DAB39CAF733B64A",
+      "year": 1990,
+      "type": "reference",
+      "coverage": "Definitive theoretical framework: 17-tone unequal scale, interval analysis, four primary tetrachords, modulation theory",
+      "citation": "Farhat, H. (1990). The Dastgah Concept in Persian Music. Cambridge University Press."
+    },
+    "talai-transcription": {
+      "name": "Traditional Persian Art Music: The Radif of Mirza Abdollah",
+      "shortName": "Talai",
+      "author": "Dariush Talai",
+      "basedOn": "Oral tradition of Mirza Abdollah as transmitted through master-student lineage",
+      "license": "Published book (Mazda Publishers)",
+      "url": "https://www.mazdapublishers.com/book/traditional-persian-art-music",
+      "year": 2000,
+      "type": "reference",
+      "coverage": "617 pages, 238 gooshehs in staff notation across 7 dastgahs and 5 avazes. The most comprehensive published transcription of Mirza Abdollah's radif.",
+      "citation": "Talai, D. (2000). Traditional Persian Art Music: The Radif of Mirza Abdollah. Mazda Publishers."
+    },
+    "ableton-tuning": {
+      "name": "Ableton Tuning System: Persian Radif",
+      "shortName": "Ableton",
+      "author": "Ableton",
+      "basedOn": "Hormoz Farhat's research",
+      "license": "Proprietary",
+      "url": "https://tuning.ableton.com/persian-radif/dastgah-concept/",
+      "year": 2024,
+      "type": "reference",
+      "coverage": "Per-dastgah tuning presets with interval tables (90, 135, 165, 204, 270 cents) and scale degree functions",
+      "citation": "Ableton. (2024). Tuning System: Persian Radif. https://tuning.ableton.com/persian-radif/"
+    }
+  }
+}

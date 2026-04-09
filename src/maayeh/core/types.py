@@ -192,6 +192,7 @@ class MaayehMetadata:
     name: str = ""
     dastgah: str = ""
     radifs: tuple[str, ...] = ()
+    sources: tuple[str, ...] = ()
     tags: tuple[str, ...] = ()
 
 

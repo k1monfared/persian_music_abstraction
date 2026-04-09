@@ -4,6 +4,7 @@
  */
 
 import type { MaayehData } from "../types";
+import { formatSourceBadge } from "./references-panel";
 
 export interface BrowserCallbacks {
   onFilterChange: (filtered: MaayehData[]) => void;
@@ -14,6 +15,7 @@ let allMaayehs: MaayehData[] = [];
 let displayedMaayehs: MaayehData[] = [];
 let callbacks: BrowserCallbacks | null = null;
 let containerEl: HTMLElement | null = null;
+let activeDastgah: string | undefined = "mahur"; // default to mahur
 
 export function initBrowser(
   container: HTMLElement,
@@ -21,7 +23,12 @@ export function initBrowser(
   cbs: BrowserCallbacks,
 ): void {
   allMaayehs = maayehs;
-  displayedMaayehs = [...maayehs];
+  // Apply initial dastgah filter
+  if (activeDastgah) {
+    displayedMaayehs = maayehs.filter((m) => m.metadata.dastgah === activeDastgah);
+  } else {
+    displayedMaayehs = [...maayehs];
+  }
   callbacks = cbs;
   containerEl = container;
   renderBrowser();
@@ -48,28 +55,32 @@ function renderBrowser(): void {
   containerEl.appendChild(search);
 
   // Dastgah filter chips
-  const dastgahs = [...new Set(allMaayehs.map((m) => m.metadata.dastgah).filter(Boolean))];
-  if (dastgahs.length > 1) {
+  const dastgahs = [...new Set(allMaayehs.map((m) => m.metadata.dastgah).filter(Boolean))].sort();
+  if (dastgahs.length > 0) {
     const chipRow = document.createElement("div");
     chipRow.className = "browser-chips";
 
     const allChip = document.createElement("button");
-    allChip.className = "browser-chip active";
-    allChip.textContent = "All";
+    allChip.className = "browser-chip";
+    allChip.textContent = `All (${allMaayehs.length})`;
     allChip.addEventListener("click", () => {
       chipRow.querySelectorAll(".browser-chip").forEach((c) => c.classList.remove("active"));
       allChip.classList.add("active");
+      activeDastgah = undefined;
       filterMaayehs(search.value);
     });
     chipRow.appendChild(allChip);
 
     for (const d of dastgahs) {
+      const count = allMaayehs.filter((m) => m.metadata.dastgah === d).length;
       const chip = document.createElement("button");
       chip.className = "browser-chip";
-      chip.textContent = d;
+      if (d === activeDastgah) chip.classList.add("active");
+      chip.textContent = `${d} (${count})`;
       chip.addEventListener("click", () => {
         chipRow.querySelectorAll(".browser-chip").forEach((c) => c.classList.remove("active"));
         chip.classList.add("active");
+        activeDastgah = d;
         filterMaayehs(search.value, d);
       });
       chipRow.appendChild(chip);
@@ -106,6 +117,14 @@ function renderList(list: HTMLElement, maayehs: MaayehData[]): void {
     const name = document.createElement("span");
     name.className = "browser-item-name";
     name.textContent = m.name;
+
+    const sourceBadge = formatSourceBadge(m.metadata.sources ?? []);
+    if (sourceBadge) {
+      const badge = document.createElement("span");
+      badge.className = "browser-item-source";
+      badge.textContent = sourceBadge;
+      item.appendChild(badge);
+    }
 
     const meta = document.createElement("span");
     meta.className = "browser-item-meta";

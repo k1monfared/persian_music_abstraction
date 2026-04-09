@@ -132,6 +132,7 @@ def parse_maayeh(text: str) -> MaayehDefinition:
         name=metadata_dict.get("name", ""),
         dastgah=metadata_dict.get("dastgah", ""),
         radifs=_parse_comma_list(metadata_dict.get("radifs", "")),
+        sources=_parse_comma_list(metadata_dict.get("sources", "")),
         tags=_parse_comma_list(metadata_dict.get("tags", "")),
     )
 
@@ -170,6 +171,8 @@ def serialize_maayeh(defn: MaayehDefinition) -> str:
         lines.append(f"dastgah: {meta.dastgah}")
     if meta.radifs:
         lines.append(f"radifs: {', '.join(meta.radifs)}")
+    if meta.sources:
+        lines.append(f"sources: {', '.join(meta.sources)}")
     if meta.tags:
         lines.append(f"tags: {', '.join(meta.tags)}")
 

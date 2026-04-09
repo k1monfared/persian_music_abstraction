@@ -607,3 +607,120 @@ header p {
   color: var(--text-dim);
 }
 
+/* --- Source badges in browser --- */
+.browser-item-source {
+  font-size: 0.58rem;
+  color: var(--accent);
+  background: var(--surface-2);
+  padding: 1px 6px;
+  border-radius: 8px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+/* --- References section --- */
+.references-section {
+  width: 100%;
+  max-width: 700px;
+}
+
+.references-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  color: var(--text-heading);
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.references-intro {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.references-group-header {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 1.1rem;
+  color: var(--text-heading);
+  margin: 24px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.reference-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.reference-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.reference-name a {
+  font-size: 0.92rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 400;
+}
+
+.reference-name a:hover {
+  text-decoration: underline;
+}
+
+.reference-id {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  background: var(--surface-2);
+  padding: 1px 8px;
+  border-radius: 8px;
+  font-family: 'Inconsolata', monospace;
+}
+
+.reference-author {
+  font-size: 0.78rem;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.reference-based {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.reference-coverage {
+  font-size: 0.72rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.reference-citation {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  font-family: 'Inconsolata', monospace;
+  line-height: 1.5;
+  padding: 8px;
+  background: var(--surface-2);
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.reference-license {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+

@@ -19,6 +19,7 @@ import {
 } from "./grid-editor";
 import { initBrowser } from "./database-browser";
 import { initDiscovery } from "./discovery-panel";
+import { loadSources, initReferences } from "./references-panel";
 
 // Global state
 let currentRoot: RootNote = "C";
@@ -144,6 +145,17 @@ function setupEditor(): void {
   });
 }
 
+function updateStripTitle(maayehs: MaayehData[]): void {
+  const titleEl = document.getElementById("strip-title");
+  if (!titleEl) return;
+  const dastgahs = [...new Set(maayehs.map((m) => m.metadata.dastgah).filter(Boolean))];
+  if (dastgahs.length === 1) {
+    titleEl.textContent = `Dastgah-e ${dastgahs[0].charAt(0).toUpperCase() + dastgahs[0].slice(1)}`;
+  } else {
+    titleEl.textContent = `Radif (${maayehs.length} maayehs)`;
+  }
+}
+
 // --- Rendering ---
 
 function rerenderAll(): void {
@@ -168,7 +180,9 @@ async function loadAllMaayehs(container: HTMLElement): Promise<void> {
     }
 
     allMaayehs = maayehs;
+    // Start with Mahur as default view (manageable size)
     loadedMaayehs = maayehs.filter((m) => m.metadata.dastgah === "mahur");
+    updateStripTitle(loadedMaayehs);
     renderStrip(loadedMaayehs, container);
 
     // Initialize browser with all maayehs
@@ -177,6 +191,7 @@ async function loadAllMaayehs(container: HTMLElement): Promise<void> {
       initBrowser(browserEl, allMaayehs, {
         onFilterChange: (filtered) => {
           loadedMaayehs = filtered;
+          updateStripTitle(filtered);
           renderStrip(loadedMaayehs, container);
         },
         onReorder: (reordered) => {
@@ -190,6 +205,13 @@ async function loadAllMaayehs(container: HTMLElement): Promise<void> {
     const discoveryEl = document.getElementById("discovery-panel");
     if (discoveryEl) {
       initDiscovery(discoveryEl, allMaayehs);
+    }
+
+    // Load sources and initialize references panel
+    await loadSources();
+    const refsEl = document.getElementById("references-panel");
+    if (refsEl) {
+      initReferences(refsEl);
     }
   } catch {
     // Manifest not available
