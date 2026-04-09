@@ -6,3 +6,17 @@ node_modules/
 .claude/cache/
 .mcp/logs/
 *.claude-session
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+*.egg
+
+# Build output
+build/
+
+# Screenshots from development
+*.png
+.playwright-mcp/

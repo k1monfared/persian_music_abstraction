@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daramad — Mahur</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inconsolata:wght@300;400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0e0e0f;
+    --surface:   #161618;
+    --border:    #2a2a2e;
+    --dang1:     #c8a96e;   /* warm gold — paayin dasteh */
+    --dang2:     #7ea8c4;   /* cool blue — baalaa dasteh */
+    --junction:  #b8d4a8;   /* sage green — the pivot note */
+    --melody:    #e8e0d0;
+    --shahed:    #e8a070;
+    --ist:       #a0c8a0;
+    --dim:       #3a3a3f;
+    --text:      #c8c0b0;
+    --text-dim:  #605850;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inconsolata', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2.8rem;
+    letter-spacing: 0.12em;
+    color: var(--melody);
+  }
+
+  header h1 span {
+    font-style: italic;
+    color: var(--dang1);
+  }
+
+  header p {
+    margin-top: 8px;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .viz-container {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+  }
+
+  /* LEFT: pitch axis labels */
+  .pitch-axis {
+    display: flex;
+    flex-direction: column-reverse; /* low at bottom */
+    margin-right: 12px;
+    padding-top: 0;
+    position: relative;
+  }
+
+  .pitch-cell-label {
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    padding-right: 6px;
+  }
+
+  .pitch-cell-label.named {
+    color: var(--text);
+    font-size: 0.65rem;
+  }
+
+  /* CENTER: the grid + melody overlay */
+  .grid-wrapper {
+    position: relative;
+  }
+
+  svg.grid-svg {
+    display: block;
+  }
+
+
+
+  footer {
+    margin-top: 48px;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-align: center;
+    line-height: 2;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>درآمد — <span>ماهور</span></h1>
+  <p>Daramad · Dastgah-e Mahur · Melodic contour over dang grid</p>
+</header>
+
+<div class="viz-container">
+  <div class="grid-wrapper">
+    <svg class="grid-svg" id="mainSvg"></svg>
+  </div>
+
+</div>
+
+
+
+<script>
+// ─── Input ────────────────────────────────────────────────────────────────────
+// intervals: quarter-tone distances between consecutive notes, | = dang boundary
+// ist/shahed: 1-based degree index
+
+const INPUT = {
+  intervals: '4 4 2 | 4 4 2 | 4 4 2 | 4 4 2',
+  ist:     1,
+  shahed:  3,
+  touched: new Set([1, 2, 3, 4, 5]),
+};
+
+// ─── Parse input → note positions ────────────────────────────────────────────
+function parse(input) {
+  const parts = input.intervals.split('|').map(s => s.trim().split(/\s+/).map(Number));
+  const notes = [];
+  let qt = 0;
+  parts.forEach((dang, di) => {
+    // first note of each dang — skip if it duplicates the last pushed note
+    if (notes.length === 0 || notes[notes.length - 1].qt !== qt) {
+      notes.push({ qt, dang: di });
+    } else {
+      // boundary note belongs to the new dang
+      notes[notes.length - 1].dang = di;
+    }
+    dang.forEach((interval, ii) => {
+      qt += interval;
+      // last note of a dang that isn't the last dang = boundary, add gap before next dang
+      const isLastInterval = ii === dang.length - 1;
+      const isLastDang = di === parts.length - 1;
+      notes.push({ qt, dang: di });
+      if (isLastInterval && !isLastDang) qt += 4; // gap of 4 qt between dangs
+    });
+  });
+  // tag ist, shahed, touched (1-based)
+  notes.forEach((n, i) => {
+    const deg = i + 1;
+    if (deg === input.ist)                       n.role = 'ist';
+    if (deg === input.shahed)                    n.role = 'shahed';
+    if (input.touched && input.touched.has(deg)) n.touched = true;
+  });
+  return notes;
+}
+
+const NOTES = parse(INPUT);
+const TOTAL_QT = NOTES[NOTES.length - 1].qt + 4;  // a little headroom above top note
+
+// ─── Colors ───────────────────────────────────────────────────────────────────
+// 4 dang colors — ordinal warm→cool
+const DANG_COLORS = [
+  { fill: '#8B5E3C', stroke: '#A67248' },  // dang 0 — deep amber
+  { fill: '#5C7A4E', stroke: '#74996A' },  // dang 1 — muted olive
+  { fill: '#3D5A80', stroke: '#5275A0' },  // dang 2 — slate blue
+  { fill: '#6B4E71', stroke: '#876092' },  // dang 3 — dusty purple
+];
+
+const ROLE_COLORS = {
+  ist:    { fill: '#F0EDE8', stroke: '#FFFFFF' },   // bright white
+  shahed: { fill: '#E8503A', stroke: '#FF6B52' },   // bright coral
+};
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+const CELL_H = 14;
+const SQ     = CELL_H - 2;
+const SVG_W  = 40;
+const SVG_H  = TOTAL_QT * CELL_H + 4;
+
+function qtY(qt) { return SVG_H - (qt + 1) * CELL_H; }
+
+// ─── SVG helper ───────────────────────────────────────────────────────────────
+function svgEl(tag, attrs, parent) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+  if (parent) parent.appendChild(el);
+  return el;
+}
+
+// ─── Build ────────────────────────────────────────────────────────────────────
+function build() {
+  const svg = document.getElementById('mainSvg');
+  svg.setAttribute('width',   SVG_W);
+  svg.setAttribute('height',  SVG_H);
+  svg.setAttribute('viewBox', `0 0 ${SVG_W} ${SVG_H}`);
+  svg.style.background = 'transparent';
+
+  const cx = SVG_W / 2;
+
+  NOTES.forEach(n => {
+    const y = qtY(n.qt - 1);   // square sits above this fret
+    const col = n.role ? ROLE_COLORS[n.role] : DANG_COLORS[n.dang] || DANG_COLORS[0];
+    const opacity = n.touched ? 1 : 0.6;
+    svgEl('rect', {
+      x: cx - SQ / 2, y: y - (CELL_H - 1),
+      width: SQ, height: SQ,
+      fill: col.fill, stroke: col.stroke,
+      'stroke-width': 1.5, rx: 2, opacity,
+    }, svg);
+  });
+}
+
+build();
+</script>
+</body>
+</html>

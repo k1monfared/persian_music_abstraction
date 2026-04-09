@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/k1monfared/persian_music_abstraction/schema/maayeh.schema.json",
+  "title": "Maayeh",
+  "description": "A Persian modal structure (maayeh) with scale, gooshehs, and derived quantities.",
+  "type": "object",
+  "required": ["schemaVersion", "name", "dangs", "gaps", "notes", "gooshehs", "derived"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the maayeh."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Organizational metadata (not part of the musical domain).",
+      "properties": {
+        "dastgah": { "type": "string" },
+        "radifs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "dangs": {
+      "type": "array",
+      "description": "Ordered list of dangs, each an array of interval sizes in qt.",
+      "items": {
+        "type": "array",
+        "items": { "type": "integer", "minimum": 1 },
+        "minItems": 3,
+        "maxItems": 4
+      },
+      "minItems": 1
+    },
+    "gaps": {
+      "type": "array",
+      "description": "Gaps between consecutive dangs. null = default (4 qt), integer = explicit.",
+      "items": {
+        "type": ["integer", "null"],
+        "minimum": 0
+      }
+    },
+    "notes": {
+      "type": "array",
+      "description": "Full ordered note set.",
+      "items": {
+        "type": "object",
+        "required": ["degree", "qt", "dang", "dangIndices", "boundary"],
+        "additionalProperties": false,
+        "properties": {
+          "degree": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "1-based index in the full note set."
+          },
+          "qt": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Absolute position in quarter-tones from root."
+          },
+          "dang": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Primary dang index (0-based)."
+          },
+          "dangIndices": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 0 },
+            "minItems": 1,
+            "description": "All dang affiliations. Boundary notes belong to two dangs."
+          },
+          "boundary": {
+            "type": "boolean",
+            "description": "True if this note sits at a dang boundary."
+          }
+        }
+      }
+    },
+    "gooshehs": {
+      "type": "array",
+      "description": "Behavioral overlays on the scale: role assignments and melodic profiles.",
+      "items": {
+        "type": "object",
+        "required": ["name", "ist", "shahed", "melody", "touchedSet"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Goosheh name."
+          },
+          "ist": {
+            "type": ["integer", "null"],
+            "description": "Degree of the tonal center (1-based), or null."
+          },
+          "shahed": {
+            "type": ["integer", "null"],
+            "description": "Degree of the characteristic tone (1-based), or null."
+          },
+          "melody": {
+            "type": ["array", "null"],
+            "items": { "type": "integer", "minimum": 1 },
+            "description": "Sequence of degrees. null = not provided (all notes touched)."
+          },
+          "touchedSet": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 1 },
+            "description": "Sorted list of unique degrees that appear in the melody."
+          }
+        }
+      }
+    },
+    "derived": {
+      "type": "object",
+      "description": "Computed quantities derived from the scale structure.",
+      "required": ["intervalVector", "rangeQt"],
+      "additionalProperties": false,
+      "properties": {
+        "intervalVector": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1 },
+          "description": "Consecutive qt differences across all notes."
+        },
+        "rangeQt": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total qt span from first to last note."
+        }
+      }
+    }
+  }
+}

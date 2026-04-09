@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maayeh</title>
+</head>
+<body>
+
+<header>
+  <h1>مایه — <span>Maayeh</span></h1>
+  <p>Persian modal structure visualization</p>
+</header>
+
+<div class="app-container">
+
+  <!-- Controls bar -->
+  <div class="controls">
+    <div class="control-group">
+      <label for="root-select">Root</label>
+      <select id="root-select"></select>
+    </div>
+
+    <div class="control-group">
+      <label>View</label>
+      <div class="btn-group">
+        <button data-view-mode="sparse" title="Sparse: only note positions">
+          <svg width="14" height="14" viewBox="0 0 14 14"><rect x="4" y="1" width="6" height="3" rx="1" fill="currentColor"/><rect x="4" y="10" width="6" height="3" rx="1" fill="currentColor"/></svg>
+        </button>
+        <button data-view-mode="grid" title="Grid: show all quarter-tone positions">
+          <svg width="14" height="14" viewBox="0 0 14 14"><rect x="4" y="1" width="6" height="3" rx="1" fill="currentColor"/><rect x="4" y="5.5" width="6" height="3" rx="1" fill="currentColor" opacity="0.25"/><rect x="4" y="10" width="6" height="3" rx="1" fill="currentColor"/></svg>
+        </button>
+        <button data-view-mode="stretched" title="Stretched: fill interval space">
+          <svg width="14" height="14" viewBox="0 0 14 14"><rect x="4" y="1" width="6" height="5" rx="1" fill="currentColor"/><rect x="4" y="7.5" width="6" height="5.5" rx="1" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <button id="toggle-names" title="Toggle note names">
+        A B C
+      </button>
+    </div>
+
+    <div class="control-group">
+      <button id="toggle-theme">Light</button>
+    </div>
+  </div>
+
+  <!-- Tab navigation -->
+  <nav class="tab-bar">
+    <button class="tab active" data-tab="visualization">Visualization</button>
+    <button class="tab" data-tab="database">Database</button>
+    <button class="tab" data-tab="editor">Editor</button>
+    <button class="tab" data-tab="discovery">Discovery</button>
+  </nav>
+
+  <!-- Tab panels -->
+  <div class="tab-panel active" id="tab-visualization">
+    <div class="strip-section">
+      <h2>Dastgah-e Mahur</h2>
+      <div class="strip-container" id="strip-container"></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-database">
+    <div class="browser-section">
+      <h2>Database</h2>
+      <div id="database-browser"></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-editor">
+    <div class="editor-section">
+      <h2>Editor</h2>
+      <div class="editor-layout">
+        <div class="editor-grid-container" id="editor-grid"></div>
+        <div class="editor-sidebar">
+          <div class="editor-notation" id="editor-notation">
+            <div class="notation-label">Notation</div>
+            <pre id="editor-text"></pre>
+          </div>
+          <div class="editor-actions">
+            <button id="editor-clear">Clear</button>
+            <button id="editor-export">Export .maayeh</button>
+          </div>
+          <div class="editor-status" id="editor-status"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="tab-discovery">
+    <div class="discovery-section">
+      <h2>Discovery</h2>
+      <div id="discovery-panel"></div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
