@@ -2,6 +2,8 @@
 
 **Status**: 🟡 MVP | **Mode**: 🤖 Claude Code | **Updated**: 2026-04-08
 
+**[Live Demo](https://k1monfared.github.io/persian_music_abstraction/)**
+
 A system for mathematical, computational, and visual representation of Persian classical music modal structures (maayeh, dastgah, dang). Input melodies and modal structures in a compact notation, compute formal mathematical representations, and visualize results as interactive side-by-side columns.
 
 ## Overview
