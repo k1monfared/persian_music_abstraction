@@ -1,14 +1,15 @@
 /**
  * Single-column SVG renderer for a maayeh.
  *
- * Supports three display modes:
- *   "sparse"    - gaps between note squares
- *   "grid"      - empty/ghost squares fill every qt position
- *   "stretched" - note squares stretch vertically to fill the gap to the next note
+ * Visual approach:
+ *   - Dang colors are shown as subtle background bands behind the notes
+ *   - Notes themselves are neutral (light/dark) with active vs inactive opacity
+ *   - Grid mode adds dashed empty squares
+ *   - Stretched mode fills interval space vertically
  */
 
 import type { MaayehData, MaayehGoosheh, MaayehNote } from "../types";
-import type { ColorPair, LayoutConfig, Palette } from "./palette";
+import type { LayoutConfig, Palette } from "./palette";
 import { DEFAULT_LAYOUT, DEFAULT_PALETTE } from "./palette";
 import { createSvg, svgEl } from "./svg-utils";
 import type { RootNote } from "./note-names";
@@ -47,60 +48,62 @@ export function renderColumn(
   const svg = createSvg(layout.columnWidth, svgH);
   const cx = layout.columnWidth / 2;
 
-  // Build a set of note qt positions for quick lookup
-  const noteQtSet = new Set(data.notes.map((n) => n.qt));
-
-  // Grid mode: draw ghost squares for every qt position.
-  // Colored by the dang they fall within, dashed border, very faint fill.
-  if (viewMode === "grid") {
-    // Build dang ranges: each dang spans from its first note's qt to its last note's qt
-    const dangRanges: { dang: number; minQt: number; maxQt: number }[] = [];
-    for (const note of data.notes) {
-      const existing = dangRanges.find((r) => r.dang === note.dang);
-      if (existing) {
-        existing.minQt = Math.min(existing.minQt, note.qt);
-        existing.maxQt = Math.max(existing.maxQt, note.qt);
-      } else {
-        dangRanges.push({ dang: note.dang, minQt: note.qt, maxQt: note.qt });
-      }
-    }
-
-    const gridOpacity = palette.untouchedOpacity / 2;
-
-    for (let qt = 0; qt <= (options.maxQt ?? ownMaxQt); qt++) {
-      if (noteQtSet.has(qt)) continue;
-      const y = svgH - qt * layout.cellHeight;
-
-      // Find which dang this qt falls within
-      const range = dangRanges.find((r) => qt >= r.minQt && qt <= r.maxQt);
-      const dangCol = range
-        ? palette.dangColors[range.dang] ?? palette.dangColors[0]
-        : null;
-
-      svgEl(
-        "rect",
-        {
-          x: cx - layout.squareSize / 2,
-          y: y - (layout.cellHeight - 1),
-          width: layout.squareSize,
-          height: layout.squareSize,
-          fill: dangCol ? dangCol.fill : "transparent",
-          stroke: dangCol ? dangCol.stroke : palette.emptyStroke,
-          "stroke-width": 1,
-          "stroke-dasharray": "2 2",
-          rx: layout.borderRadius,
-          opacity: gridOpacity,
-        },
-        svg,
-      );
+  // Build dang ranges for background bands and grid coloring
+  const dangRanges: { dang: number; minQt: number; maxQt: number }[] = [];
+  for (const note of data.notes) {
+    const existing = dangRanges.find((r) => r.dang === note.dang);
+    if (existing) {
+      existing.minQt = Math.min(existing.minQt, note.qt);
+      existing.maxQt = Math.max(existing.maxQt, note.qt);
+    } else {
+      dangRanges.push({ dang: note.dang, minQt: note.qt, maxQt: note.qt });
     }
   }
 
-  // Draw notes
+  // Draw dang background bands (subtle colored rectangles)
+  for (const range of dangRanges) {
+    const col = palette.dangColors[range.dang] ?? palette.dangColors[0];
+    const topY = svgH - range.maxQt * layout.cellHeight - layout.cellHeight;
+    const botY = svgH - range.minQt * layout.cellHeight + 2;
+    const bandH = botY - topY;
+    svgEl("rect", {
+      x: cx - layout.squareSize / 2 - 2,
+      y: topY,
+      width: layout.squareSize + 4,
+      height: bandH,
+      fill: col.fill,
+      rx: 3,
+      opacity: palette.dangBandOpacity,
+    }, svg);
+  }
+
+  // Build note qt set for grid
+  const noteQtSet = new Set(data.notes.map((n) => n.qt));
+
+  // Grid mode: dashed empty squares
+  if (viewMode === "grid") {
+    for (let qt = 0; qt <= (options.maxQt ?? ownMaxQt); qt++) {
+      if (noteQtSet.has(qt)) continue;
+      const y = svgH - qt * layout.cellHeight;
+      svgEl("rect", {
+        x: cx - layout.squareSize / 2,
+        y: y - (layout.cellHeight - 1),
+        width: layout.squareSize,
+        height: layout.squareSize,
+        fill: "transparent",
+        stroke: palette.emptyStroke,
+        "stroke-width": 1,
+        "stroke-dasharray": "2 2",
+        rx: layout.borderRadius,
+        opacity: palette.gridOpacity,
+      }, svg);
+    }
+  }
+
+  // Draw notes (neutral color, opacity varies)
   for (let i = 0; i < data.notes.length; i++) {
     const note = data.notes[i];
     const y = svgH - note.qt * layout.cellHeight;
-    const col = noteColor(note, palette);
     const isTouched = !hasMelody || touchedSet.has(note.degree);
     const role = noteRole(note, goosheh);
 
@@ -117,28 +120,23 @@ export function renderColumn(
       rectY = y - (layout.cellHeight - 1);
     }
 
-    const fill = col.fill;
-    const stroke = col.stroke;
-    const strokeWidth = isTouched ? layout.strokeWidth : 1;
+    const fill = palette.noteFill;
+    const stroke = palette.noteStroke;
     const opacity = isTouched ? 1 : palette.untouchedOpacity;
 
-    const rect = svgEl(
-      "rect",
-      {
-        x: cx - layout.squareSize / 2,
-        y: rectY,
-        width: layout.squareSize,
-        height: rectH,
-        fill,
-        stroke,
-        "stroke-width": strokeWidth,
-        rx: layout.borderRadius,
-        opacity,
-      },
-      svg,
-    );
+    const rect = svgEl("rect", {
+      x: cx - layout.squareSize / 2,
+      y: rectY,
+      width: layout.squareSize,
+      height: rectH,
+      fill,
+      stroke,
+      "stroke-width": isTouched ? layout.strokeWidth : 1,
+      rx: layout.borderRadius,
+      opacity,
+    }, svg);
 
-    // Role markers: O for ist, X for shahed, centered in the square
+    // Role markers: O for ist, X for shahed
     if (role) {
       const markerCx = cx;
       const markerCy = rectY + rectH / 2;
@@ -146,52 +144,37 @@ export function renderColumn(
       const r = Math.min(layout.squareSize, rectH) * 0.2;
 
       if (role === "ist") {
-        // Circle
         svgEl("circle", {
-          cx: markerCx,
-          cy: markerCy,
-          r,
-          fill: "none",
-          stroke: markerColor,
-          "stroke-width": 1.5,
-          opacity,
+          cx: markerCx, cy: markerCy, r,
+          fill: "none", stroke: markerColor,
+          "stroke-width": 1.5, opacity,
         }, svg);
       } else {
-        // X cross
         svgEl("line", {
           x1: markerCx - r, y1: markerCy - r,
           x2: markerCx + r, y2: markerCy + r,
-          stroke: markerColor,
-          "stroke-width": 1.5,
-          "stroke-linecap": "round",
-          opacity,
+          stroke: markerColor, "stroke-width": 1.5,
+          "stroke-linecap": "round", opacity,
         }, svg);
         svgEl("line", {
           x1: markerCx + r, y1: markerCy - r,
           x2: markerCx - r, y2: markerCy + r,
-          stroke: markerColor,
-          "stroke-width": 1.5,
-          "stroke-linecap": "round",
-          opacity,
+          stroke: markerColor, "stroke-width": 1.5,
+          "stroke-linecap": "round", opacity,
         }, svg);
       }
     }
 
     // Hover tooltip
     const noteName = getNoteName(note.qt, root);
-    const title = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "title",
-    );
+    const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
     title.textContent = [
       `${noteName} (degree ${note.degree})`,
       `qt: ${note.qt}`,
       `dang: ${note.dang}`,
       role ? `role: ${role}` : null,
       isTouched ? "active" : "inactive",
-    ]
-      .filter(Boolean)
-      .join("\n");
+    ].filter(Boolean).join("\n");
     rect.appendChild(title);
   }
 
@@ -206,11 +189,4 @@ function noteRole(
   if (note.degree === goosheh.ist) return "ist";
   if (note.degree === goosheh.shahed) return "shahed";
   return null;
-}
-
-function noteColor(
-  note: MaayehNote,
-  palette: Palette,
-): ColorPair {
-  return palette.dangColors[note.dang] ?? palette.dangColors[0];
 }

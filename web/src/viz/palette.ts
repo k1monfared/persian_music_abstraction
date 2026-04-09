@@ -1,11 +1,11 @@
 /**
  * Color and layout configuration for maayeh visualization.
- * Supports dark and light themes.
  *
- * Three visual tiers:
- *   1. Active notes (in melody): solid fill, full opacity
- *   2. Scale notes (in maayeh, not in melody): colored outline, untouchedOpacity
- *   3. Grid positions (empty qt slots): subtle ghost squares, gridOpacity
+ * Visual approach:
+ *   - Dang colors are subtle background bands behind notes
+ *   - Notes are neutral (light in dark mode, dark in light mode)
+ *   - Active notes: full opacity. Inactive: ~45% opacity.
+ *   - Grid: dashed empty squares, very faint.
  */
 
 export interface ColorPair {
@@ -15,6 +15,9 @@ export interface ColorPair {
 
 export interface Palette {
   dangColors: ColorPair[];
+  dangBandOpacity: number;
+  noteFill: string;
+  noteStroke: string;
   roleColors: Record<"ist" | "shahed", ColorPair>;
   roleMarkerColor: string;
   untouchedOpacity: number;
@@ -32,15 +35,18 @@ export const DARK_PALETTE: Palette = {
     { fill: "#3D5A80", stroke: "#5275A0" }, // dang 2: slate blue
     { fill: "#6B4E71", stroke: "#876092" }, // dang 3: dusty purple
   ],
+  dangBandOpacity: 0.15,
+  noteFill: "#e0dcd6",
+  noteStroke: "#a8a4a0",
   roleColors: {
     ist: { fill: "#F0EDE8", stroke: "#FFFFFF" },
     shahed: { fill: "#E8503A", stroke: "#FF6B52" },
   },
-  roleMarkerColor: "#FFFFFF",
-  untouchedOpacity: 0.25,
-  gridOpacity: 0.4,
+  roleMarkerColor: "#333333",
+  untouchedOpacity: 0.45,
+  gridOpacity: 0.3,
   emptyFill: "transparent",
-  emptyStroke: "#888890",
+  emptyStroke: "#555560",
   labelColor: "#c8c0b0",
   labelDimColor: "#605850",
 };
@@ -52,13 +58,16 @@ export const LIGHT_PALETTE: Palette = {
     { fill: "#4A72A0", stroke: "#3A6290" }, // dang 2: mid blue
     { fill: "#7A5A80", stroke: "#6A4A70" }, // dang 3: plum
   ],
+  dangBandOpacity: 0.12,
+  noteFill: "#2a2a2a",
+  noteStroke: "#555555",
   roleColors: {
     ist: { fill: "#2C2C2C", stroke: "#000000" },
     shahed: { fill: "#D03020", stroke: "#B02010" },
   },
-  roleMarkerColor: "#000000",
-  untouchedOpacity: 0.22,
-  gridOpacity: 0.4,
+  roleMarkerColor: "#ffffff",
+  untouchedOpacity: 0.45,
+  gridOpacity: 0.3,
   emptyFill: "transparent",
   emptyStroke: "#888880",
   labelColor: "#333333",
