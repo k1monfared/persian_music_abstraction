@@ -4,6 +4,7 @@ import { resolve } from "path";
 export default defineConfig({
   root: resolve(__dirname),
   publicDir: resolve(__dirname, "../build/data"),
+  base: "/persian_music_abstraction/",
   server: {
     open: true,
   },
