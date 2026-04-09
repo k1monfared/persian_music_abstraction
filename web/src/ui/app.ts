@@ -169,13 +169,14 @@ function rerenderAll(): void {
 
 async function loadAllMaayehs(container: HTMLElement): Promise<void> {
   try {
-    const resp = await fetch("/index.json");
+    const base = import.meta.env.BASE_URL;
+    const resp = await fetch(`${base}index.json`);
     if (!resp.ok) return;
     const manifest: MaayehManifest = await resp.json();
 
     const maayehs: MaayehData[] = [];
     for (const entry of manifest.maayehs) {
-      const r = await fetch(`/${entry.file}`);
+      const r = await fetch(`${base}${entry.file}`);
       if (r.ok) maayehs.push(await r.json());
     }
 

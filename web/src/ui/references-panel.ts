@@ -10,7 +10,8 @@ let sourcesRegistry: SourcesRegistry | null = null;
 export async function loadSources(): Promise<SourcesRegistry | null> {
   if (sourcesRegistry) return sourcesRegistry;
   try {
-    const resp = await fetch("/sources.json");
+    const base = import.meta.env.BASE_URL;
+    const resp = await fetch(`${base}sources.json`);
     if (!resp.ok) return null;
     sourcesRegistry = await resp.json();
     return sourcesRegistry;
