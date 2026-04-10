@@ -8,7 +8,7 @@ import type { MaayehData, MaayehManifest } from "../types";
 import { renderColumn, type ViewMode } from "../viz/maayeh-column";
 import { renderPitchAxis } from "../viz/pitch-axis";
 import { renderConnectors } from "../viz/connectors";
-import { DARK_PALETTE, LIGHT_PALETTE, type Palette } from "../viz/palette";
+import { DARK_PALETTE, LIGHT_PALETTE, DEFAULT_LAYOUT, type Palette } from "../viz/palette";
 import { ALL_ROOTS, type RootNote } from "../viz/note-names";
 import {
   initEditor,
@@ -229,6 +229,55 @@ function renderStrip(maayehs: MaayehData[], container: HTMLElement): void {
   );
   const palette = getPalette();
 
+  // Wrapper with relative positioning for background bands
+  const stripWrapper = document.createElement("div");
+  stripWrapper.className = "strip-wrapper";
+
+  // Render dang background bands spanning full width
+  // Use the tallest maayeh's dang ranges as representative
+  const tallest = maayehs.reduce((a, b) =>
+    (a.notes.length > 0 ? a.notes[a.notes.length - 1].qt : 0) >=
+    (b.notes.length > 0 ? b.notes[b.notes.length - 1].qt : 0) ? a : b,
+    maayehs[0],
+  );
+  if (tallest) {
+    const layout = DEFAULT_LAYOUT;
+    const totalQt = maxQt + layout.headroom;
+    const svgH = totalQt * layout.cellHeight + 4;
+
+    // Compute dang ranges
+    const dangRanges: { dang: number; minQt: number; maxQt: number }[] = [];
+    for (const note of tallest.notes) {
+      const existing = dangRanges.find((r) => r.dang === note.dang);
+      if (existing) {
+        existing.minQt = Math.min(existing.minQt, note.qt);
+        existing.maxQt = Math.max(existing.maxQt, note.qt);
+      } else {
+        dangRanges.push({ dang: note.dang, minQt: note.qt, maxQt: note.qt });
+      }
+    }
+
+    const bandsContainer = document.createElement("div");
+    bandsContainer.className = "strip-bands";
+    bandsContainer.style.height = `${svgH}px`;
+
+    for (const range of dangRanges) {
+      const col = palette.dangColors[range.dang] ?? palette.dangColors[0];
+      const topY = svgH - range.maxQt * layout.cellHeight - layout.cellHeight;
+      const botY = svgH - range.minQt * layout.cellHeight + 2;
+      const bandH = botY - topY;
+
+      const band = document.createElement("div");
+      band.className = "strip-band";
+      band.style.top = `${topY}px`;
+      band.style.height = `${bandH}px`;
+      band.style.backgroundColor = col.fill;
+      band.style.opacity = String(palette.dangBandOpacity);
+      bandsContainer.appendChild(band);
+    }
+    stripWrapper.appendChild(bandsContainer);
+  }
+
   // SVG row: pitch axis (always present, visibility toggled) + columns
   const svgRow = document.createElement("div");
   svgRow.className = "strip-svg-row";
@@ -270,7 +319,8 @@ function renderStrip(maayehs: MaayehData[], container: HTMLElement): void {
     }
   }
 
-  container.appendChild(svgRow);
+  stripWrapper.appendChild(svgRow);
+  container.appendChild(stripWrapper);
 
   // Label row
   const labelRow = document.createElement("div");

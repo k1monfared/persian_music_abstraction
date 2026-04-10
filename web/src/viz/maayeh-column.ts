@@ -48,35 +48,6 @@ export function renderColumn(
   const svg = createSvg(layout.columnWidth, svgH);
   const cx = layout.columnWidth / 2;
 
-  // Build dang ranges for background bands and grid coloring
-  const dangRanges: { dang: number; minQt: number; maxQt: number }[] = [];
-  for (const note of data.notes) {
-    const existing = dangRanges.find((r) => r.dang === note.dang);
-    if (existing) {
-      existing.minQt = Math.min(existing.minQt, note.qt);
-      existing.maxQt = Math.max(existing.maxQt, note.qt);
-    } else {
-      dangRanges.push({ dang: note.dang, minQt: note.qt, maxQt: note.qt });
-    }
-  }
-
-  // Draw dang background bands (subtle colored rectangles)
-  for (const range of dangRanges) {
-    const col = palette.dangColors[range.dang] ?? palette.dangColors[0];
-    const topY = svgH - range.maxQt * layout.cellHeight - layout.cellHeight;
-    const botY = svgH - range.minQt * layout.cellHeight + 2;
-    const bandH = botY - topY;
-    svgEl("rect", {
-      x: cx - layout.squareSize / 2 - 2,
-      y: topY,
-      width: layout.squareSize + 4,
-      height: bandH,
-      fill: col.fill,
-      rx: 3,
-      opacity: palette.dangBandOpacity,
-    }, svg);
-  }
-
   // Build note qt set for grid
   const noteQtSet = new Set(data.notes.map((n) => n.qt));
 
