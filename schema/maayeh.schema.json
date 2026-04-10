@@ -42,8 +42,7 @@
       "items": {
         "type": "array",
         "items": { "type": "integer", "minimum": 1 },
-        "minItems": 3,
-        "maxItems": 4
+        "minItems": 1
       },
       "minItems": 1
     },

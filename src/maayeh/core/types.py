@@ -28,15 +28,18 @@ class Dang:
     intervals: IntervalSequence
 
     def __post_init__(self) -> None:
-        if not (3 <= len(self.intervals) <= 4):
-            raise ValueError(
-                f"Dang must have 3-4 intervals, got {len(self.intervals)}"
-            )
+        if len(self.intervals) < 1:
+            raise ValueError("Dang must have at least 1 interval")
         if any(i <= 0 for i in self.intervals):
             raise ValueError(f"All intervals must be positive, got {self.intervals}")
-        span = sum(self.intervals)
-        if not (9 <= span <= 11):
-            raise ValueError(f"Dang span must be 9-11 qt, got {span}")
+
+    @property
+    def is_canonical(self) -> bool:
+        """True if this dang meets the formal constraint: 3-4 intervals, sum 9-11."""
+        return (
+            3 <= len(self.intervals) <= 4
+            and 9 <= sum(self.intervals) <= 11
+        )
 
     @property
     def span(self) -> int:

@@ -17,21 +17,19 @@ class TestDang:
         assert d.span == 9
         assert d.note_count == 5
 
-    def test_invalid_too_few_intervals(self):
-        with pytest.raises(ValueError, match="3-4 intervals"):
-            Dang((5, 5))
+    def test_non_canonical_dang(self):
+        """Dangs outside 3-4 interval / 9-11 span are allowed but not canonical."""
+        d = Dang((5, 5))
+        assert not d.is_canonical
+        d2 = Dang((2, 2, 2, 2, 2))
+        assert not d2.is_canonical
+        d3 = Dang((2, 2, 2))
+        assert not d3.is_canonical
 
-    def test_invalid_too_many_intervals(self):
-        with pytest.raises(ValueError, match="3-4 intervals"):
-            Dang((2, 2, 2, 2, 2))
-
-    def test_invalid_span_too_small(self):
-        with pytest.raises(ValueError, match="span must be 9-11"):
-            Dang((2, 2, 2))
-
-    def test_invalid_span_too_large(self):
-        with pytest.raises(ValueError, match="span must be 9-11"):
-            Dang((4, 4, 4))
+    def test_canonical_dang(self):
+        assert Dang((4, 4, 2)).is_canonical
+        assert Dang((3, 4, 3)).is_canonical
+        assert Dang((3, 2, 2, 2)).is_canonical
 
     def test_invalid_negative_interval(self):
         with pytest.raises(ValueError, match="positive"):
