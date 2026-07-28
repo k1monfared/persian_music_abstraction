@@ -1,0 +1,26 @@
+Dastgah-e Shur Tuning Information
+Source: https://tuning.ableton.com/persian-radif/dastgah-e-shur/
+
+Scale Degrees and Functions
+  First Degree (Aqaz): C
+    Function: Beginning tone, starting point of improvisation
+  Second Degree (Finalis/Foroud): D
+    Function: Melodic cadence goal, conclusion tone
+  Fifth Degree: G
+  Sixth Degree (Moteghayyer): A
+    Function: Variable/changeable note
+    Variant: Can be lowered one quarter-tone to A koron
+
+Musical Context
+  Dastgah-e Shur features extensive repertoire in folklore and classical Iranian music
+  and its vast sub-modes. It is considered the most essential Iranian musical mode.
+
+  The sixth degree can be performed as either A natural or A koron (quarter-tone lowered),
+  creating emphasis on the fifth degree (G).
+
+Historical Notes
+  Dastgah-e Shur has ancient roots and serves as a basis for regional Iranian folk music,
+  though it was not historically among primary classical modes.
+
+Note: Detailed interval measurements in cents and pitch ratios are not provided
+in this source material.

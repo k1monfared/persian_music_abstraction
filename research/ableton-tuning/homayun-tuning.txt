@@ -1,0 +1,25 @@
+Dastgah-e Homayun Tuning Information
+Source: https://tuning.ableton.com/persian-radif/dastgah-e-homayun/
+
+Scale Degrees and Functions
+  First Degree (Aqaz): E koron
+    Function: Starting point of improvisation, "beginning"
+  Second Degree (Ist): F
+    Function: Often serves as ending note for phrases (other than final cadences)
+  Third Degree (Finalis/Foroud): G
+    Function: Melodic cadence goal, creates sense of conclusion
+  Fourth Degree (Shahed): A koron
+    Function: Remarkably prominent pitch during music creation
+
+Tuning Characteristics
+  Koron symbol: Accidental that lowers pitch by a quarter-tone
+  Designer of koron notation: Ali-Naqi Vaziri (1886-1979)
+  Modal Structure: Similar to Dastgah-e Shur
+  Modulation capability: Via sub-modes (Gushe-ha), can modulate to Segah or Chahargah
+
+Cultural Context
+  The music for zourkhaneh rituals, an Iranian traditional system of athletics
+  and a form of martial arts, is usually sung or performed in this Dastgah.
+  Known for its "royal mood."
+
+Note: The page does not include specific cent measurements or frequency ratios.

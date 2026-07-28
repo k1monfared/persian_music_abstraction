@@ -1,0 +1,22 @@
+Dastgah-e Mahur Tuning Information
+Source: https://tuning.ableton.com/persian-radif/dastgah-e-mahur/
+
+Basic Characteristics
+  First scale degree: G
+  Intervallic structure: Similar to Western Major mode
+  Emotional content: Joyful
+  Historical significance: Considered the most prominent Dastgah in Iranian classical music after Dastgah-e Shur
+
+Scale Degrees and Functions
+  Fourth degree (C): Aqaz, the beginning pitch where the Dastgah is typically initiated
+  Fifth degree (D): Shahed, a prominent pitch during music creation
+
+Special Performance Notes
+  In certain cases, the higher B (but not the lower B) is played as Bb
+  A dotted line indicates the area of melodic motion
+
+Related Resources
+  Musical example: Mohammad Reza Shajarian's "Sarve Chaman"
+
+Note: This page emphasizes structural and functional aspects rather than providing
+quantitative tuning data (no specific cent values or frequency ratios listed).

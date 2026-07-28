@@ -1,0 +1,30 @@
+Persian Dastgah Concept: Tuning and Musical Information
+Source: https://tuning.ableton.com/persian-radif/dastgah-concept/
+
+Core Concept of Dastgah
+  The term "Dastgah" originates from hand position terminology on instruments,
+  literally meaning "the position (gah) of the hand (dast)." Each Dastgah represents
+  a unique tonal space containing melodic patterns called Gusheh organized into twelve
+  main modal groups. Together, these form the Radif, a repertoire of over 250 melodic
+  patterns central to Iranian classical music.
+
+Interval Reference Table
+  Interval Type           Cent Value    Frequency Ratio
+  Minor second (m)        90            256/243
+  Lesser neutral second   135           (mean value)
+  Greater neutral second  165           (mean value)
+  Major second (M)        204           9/8
+  Plus tone               270           (larger than whole tone, unstable)
+
+Farhat's 17-Tone Scale Framework
+  Hormoz Farhat developed an unequal 17-tone scale accounting for fixed-fret
+  instruments like tar and setar. His theory emphasizes:
+    Flexible intervals rather than rigid pitch values
+    Two neutral tone categories: 125-145 cents and 150-170 cents
+    Avoidance of intervals smaller than 90 cents in modal structures
+    No chromatic movement in classical Iranian melodies
+
+Historical Context
+  Farhat rejected Western comparative approaches, asserting no "scale" concept
+  exists in Iranian music. His framework represents pitches as a compositional
+  palette generating modes typically containing 4-5 pitches, occasionally reaching 7.

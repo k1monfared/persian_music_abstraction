@@ -1,0 +1,23 @@
+Dastgah-e Nava Tuning Information
+Source: https://tuning.ableton.com/persian-radif/dastgah-e-nava/
+
+Scale Degrees and Functions
+  First Scale Degree (Tonic): D
+  Second Degree: E koron (quarter-tone lowered)
+    Function: Ist (pitch serving as ending note for phrases other than final cadences)
+  Third Degree: F
+    Function: Aqaz (beginning pitch where improvisation usually initiates)
+  Fourth Degree: G
+    Function: Finalis/Foroud (melodic cadence goal, conclusion tone)
+
+Historical Context
+  Dastgah-e Nava has a close relationship with Shur, and many of its Gushe-ha (sub-modes)
+  are structured in the modal scheme of Shur.
+
+  The modal scheme of Dastgah-e Nava is similar to the Maqam-e Nava, one of the maqams
+  described by the 11th-century music theorist Muhammad Nishaburi.
+
+Technical Details
+  Uses the koron accidental, designed by Ali-Naqi Vaziri (1886-1979), which lowers
+  pitch by a quarter-tone. The page indicates a defined "area of melodic motion" but
+  provides no specific cent values or frequency ratios.

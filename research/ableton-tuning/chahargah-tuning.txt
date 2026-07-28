@@ -1,0 +1,25 @@
+Dastgah-e Chahargah Tuning Information
+Source: https://tuning.ableton.com/persian-radif/dastgah-e-chahargah/
+
+General Description
+  One of the most characteristic modes in Iranian classical music, described as having
+  "vitality and strength" and considered suitable for epic music. It contrasts with Shur
+  and Segah, which suit gentler, more sorrowful styles.
+
+Scale Degrees and Functions
+  First scale degree (Tonic): G
+  Second scale degree: A koron (A with quarter-tone lowering)
+    Function: Aqaz ("beginning"), the typical starting point for improvisation
+  Fourth scale degree: C
+    Function: Finalis/Foroud, the melodic cadence goal and conclusion tone
+
+Technical Notes
+  Uses the koron accidental, which lowers pitch by a quarter-tone
+  (designed by Ali-Naqi Vaziri, 1886-1979)
+
+Historical Context
+  Part of the Persian Radif system of Iranian classical music, representing one of the
+  twelve primary dastgahs in this modal tradition.
+
+Note: The page does not provide specific interval measurements in cents or
+exact frequency ratios.
